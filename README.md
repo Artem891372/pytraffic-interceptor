@@ -31,3 +31,7 @@
 - `lib/socket-sniffer.js` — перехватчик WebSocket (патчит `WebSocket` в контексте страницы)
 - `pako.min.js` — распаковка сжатых сообщений (permessage-deflate)
 - `manifest.json` — манифест расширения (MV3)
+
+## Лицензия
+
+MIT — см. [LICENSE](LICENSE).
