@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Traffic Inspector</title>
+  <script src="pako.min.js"></script>
+  <style>
+    :root {
+      /* Светлая тема */
+      --bg-color: #ffffff;
+      --text-color: #1a1a1a;
+      --border-color: #e0e0e0;
+      --tab-bg: #f5f5f5;
+      --tab-active-bg: #ffffff;
+      --tab-active-border: #007bff;
+      --item-hover-bg: #f0f0f0;
+      --details-bg: #fafafa;
+      --button-bg: #007bff;
+      --button-text: #ffffff;
+      --highlight-bg: #fff3cd;
+      --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Тёмная тема */
+        --bg-color: #1e1e1e;
+        --text-color: #e0e0e0;
+        --border-color: #444444;
+        --tab-bg: #2a2a2a;
+        --tab-active-bg: #333333;
+        --tab-active-border: #4dabf7;
+        --item-hover-bg: #3a3a3a;
+        --details-bg: #252525;
+        --button-bg: #1f4565;
+        --button-text: #ffffff;
+        --highlight-bg: #704214;
+        --shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem;
+      color: var(--text-color);
+      background: var(--bg-color);
+      height: 100vh;
+      font-size: 12px;
+    }
+
+    .header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    #search {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-bottom: 2px solid var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 12px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    #search:focus {
+      border-bottom-color: var(--tab-active-border);
+    }
+
+    #reloadPage {
+      padding: 8px 16px;
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.2s;
+    }
+
+    #reloadPage:hover {
+      background: color-mix(in srgb, var(--button-bg) 80%, #ffffff);
+    }
+
+    #tabs {
+      display: flex;
+      background: var(--tab-bg);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-color);
+      transition: all 0.2s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab:hover {
+      background: var(--item-hover-bg);
+    }
+
+    .tab.active {
+      background: var(--tab-active-bg);
+      border-bottom-color: var(--tab-active-border);
+      font-weight: 600;
+    }
+
+    #list {
+      flex: 1;
+      overflow: auto;
+      padding: 8px;
+      background: var(--bg-color);
+    }
+
+    .item {
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .item:hover {
+      background: var(--item-hover-bg);
+    }
+
+    #details {
+      max-height: 45vh;
+      overflow: auto;
+      border-top: 1px solid var(--border-color);
+      padding: 12px;
+      background: var(--details-bg);
+      color: var(--text-color);
+      font-size: 12px;
+      white-space: pre-wrap;
+      box-shadow: var(--shadow);
+    }
+
+    button.copy {
+      margin-top: 8px;
+      padding: 8px 16px;
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.2s;
+    }
+
+    button.copy:hover {
+      background: color-mix(in srgb, var(--button-bg) 80%, #ffffff);
+    }
+
+    mark {
+      background: var(--highlight-bg);
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <input id="search" placeholder="Search in URL / request / response / WS...">
+    <button id="reloadPage">Reload Page</button>
+  </div>
+  <div id="tabs">
+    <div class="tab active" data-tab="http">HTTP</div>
+    <div class="tab" data-tab="ws">WebSocket</div>
+  </div>
+  <div id="list"></div>
+  <div id="details"></div>
+  <script src="panel.js"></script>
+</body>
+</html>

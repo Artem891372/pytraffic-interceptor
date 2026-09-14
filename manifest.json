@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "PyTraffic Interceptor",
+  "version": "0.0.2",
+  "description": "Intercepts WebSocket and HTTP requests and shows them in DevTools",
+  "permissions": [
+    "webRequest",
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "64": "icon64.png",
+    "128": "icon128.png"
+},
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "lib/socket-sniffer.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "devtools_page": "devtools.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/syringe.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
